@@ -26,12 +26,24 @@ $(function() {
             expect(allFeeds.length).not.toBe(0);
         });
 
-
+        it('has a URL defined',function(){
+            allFeeds.forEach(function(feed)
+            {
+               expect(feed.url).toBeDefined();
+               expect(feed.url).not.toBe(0);
+            });
+        });
         /* TODO: Write a test that loops through each feed
          * in the allFeeds object and ensures it has a URL defined
          * and that the URL is not empty.
          */
-
+         it('has a name defined',function(){
+            allFeeds.forEach(function(feed)
+            {
+               expect(feed.name).toBeDefined();
+               expect(feed.name).not.toBe(0);
+            });
+        });
 
         /* TODO: Write a test that loops through each feed
          * in the allFeeds object and ensures it has a name defined
@@ -39,6 +51,25 @@ $(function() {
          */
     });
 
+    describe('The menu',function(){
+
+        it('is hidden by default',function(){
+            const body=document.querySelector('body');
+            expect(body.classList.contains('menu-hidden')).toBe(true);
+        });
+
+        it('changes visibility when the menu icon is clicked',function(){
+            const body=document.querySelector('body');
+            const menuIcon=document.querySelector('.menu-icon-link');
+            
+             menuIcon.click();
+             expect(body.classList.contains('menu-hidden')).toBe(false);
+             menuIcon.click();    
+             expect(body.classList.contains('menu-hidden')).toBe(true);
+            
+               
+        });
+    });
 
     /* TODO: Write a new test suite named "The menu" */
 
@@ -54,6 +85,21 @@ $(function() {
           * clicked and does it hide when clicked again.
           */
 
+    describe('Initial Entries',function(){
+        const feedContainer=document.querySelector('.feed');
+        const entry=document.querySelector('.entry');
+        beforeEach(function(done){
+            loadFeed(0,done);
+            
+        });
+        it('there is at least a single entry element within the feed container',function(done){
+            
+            expect(feedContainer.contains(entry)).toBe(true);
+            done();
+        });
+        
+    });
+
     /* TODO: Write a new test suite named "Initial Entries" */
 
         /* TODO: Write a test that ensures when the loadFeed
@@ -62,6 +108,27 @@ $(function() {
          * Remember, loadFeed() is asynchronous so this test will require
          * the use of Jasmine's beforeEach and asynchronous done() function.
          */
+     describe('New Feed Selection',function(){
+        const entry=document.querySelector('.entry');
+        let intialEntry=[];
+        let changedEntry=[];
+        beforeEach(function(done){
+            loadFeed(0);
+        
+            intialEntry.push(entry.innerText);
+           
+            loadFeed(1,done);
+            
+        });
+        it('ensures when a new feed is loaded',function(done){
+            
+            changedEntry.push(entry.innerText);
+           
+            expect(changedEntry===intialEntry).toBe(false);
+            done();
+        })
+
+     })
 
     /* TODO: Write a new test suite named "New Feed Selection" */
 
