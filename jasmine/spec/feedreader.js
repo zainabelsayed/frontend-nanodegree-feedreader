@@ -29,8 +29,8 @@ $(function() {
         it('has a URL defined',function(){
             allFeeds.forEach(function(feed)
             {
-               expect(feed.url).toBeDefined();
-               expect(feed.url).not.toBe(0);
+               expect(feed.url).toBeDefined();//ensure that URL is defined
+               expect(feed.url.length).not.toBe(0);//ensure that the length of URL not zero so, it's not empty
             });
         });
         /* TODO: Write a test that loops through each feed
@@ -40,8 +40,8 @@ $(function() {
          it('has a name defined',function(){
             allFeeds.forEach(function(feed)
             {
-               expect(feed.name).toBeDefined();
-               expect(feed.name).not.toBe(0);
+               expect(feed.name).toBeDefined();//ensure that name is defined
+               expect(feed.name.length).not.toBe(0);//ensure that the length of name not zero so, it's not empty
             });
         });
 
@@ -55,17 +55,16 @@ $(function() {
 
         it('is hidden by default',function(){
             const body=document.querySelector('body');
-            expect(body.classList.contains('menu-hidden')).toBe(true);
-        });
+            expect(body.classList.contains('menu-hidden')).toBe(true);//ensure that the body has class 'menu-hidden' that ensure the menu is hidden by default
+                    });
 
         it('changes visibility when the menu icon is clicked',function(){
             const body=document.querySelector('body');
             const menuIcon=document.querySelector('.menu-icon-link');
-            
-             menuIcon.click();
-             expect(body.classList.contains('menu-hidden')).toBe(false);
+             menuIcon.click();//it clicks the menu icon
+             expect(body.classList.contains('menu-hidden')).toBe(false);//ensure that the menu is visable
              menuIcon.click();    
-             expect(body.classList.contains('menu-hidden')).toBe(true);
+             expect(body.classList.contains('menu-hidden')).toBe(true);//ensure that menu is hidden again after the second click
             
                
         });
@@ -84,17 +83,21 @@ $(function() {
           * should have two expectations: does the menu display when
           * clicked and does it hide when clicked again.
           */
-
+         
     describe('Initial Entries',function(){
         const feedContainer=document.querySelector('.feed');
-        const entry=document.querySelector('.entry');
-        beforeEach(function(done){
-            loadFeed(0,done);
-            
+        const entry=document.querySelectorAll('.entry-link');
+        
+        beforeEach(function(done){// call back function
+            loadFeed(0,function(){//load loadFeed function
+                
+                done();
+            });
+              
         });
         it('there is at least a single entry element within the feed container',function(done){
             
-            expect(feedContainer.contains(entry)).toBe(true);
+            expect(entry.length).not.toBe(0);//ensure that there is a content in the entry-link
             done();
         });
         
@@ -109,24 +112,26 @@ $(function() {
          * the use of Jasmine's beforeEach and asynchronous done() function.
          */
      describe('New Feed Selection',function(){
-        const entry=document.querySelector('.entry');
+        const entry=document.querySelectorAll('.entry');
         let intialEntry=[];
         let changedEntry=[];
-        beforeEach(function(done){
-            loadFeed(0);
-        
-            intialEntry.push(entry.innerText);
-           
-            loadFeed(1,done);
-            
+        beforeEach(function(done){//all back function
+            loadFeed(0,function(){
+                entry.forEach(function(entry){
+                    intialEntry.push(entry.innerText);//put the first content in intial entry array
+                });
+            loadFeed(1,done);//load the second content
+            });  
         });
         it('ensures when a new feed is loaded',function(done){
-            
-            changedEntry.push(entry.innerText);
-           
-            expect(changedEntry===intialEntry).toBe(false);
+
+            entry.forEach(function(entry){
+                    changedEntry.push(entry.innerText);//put the second content in intial entry array
+                });
+
+            expect(changedEntry===intialEntry).toBe(false);//compare the first and second content and ensure to be false
             done();
-        })
+        });
 
      })
 
